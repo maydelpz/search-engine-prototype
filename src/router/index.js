@@ -5,6 +5,10 @@ const router = createRouter({
   linkActiveClass: 'active',
   routes: [
     {
+      path: '/',
+      redirect: '/pokemons'
+    },
+    {
       path: '/pokemons',
       name: 'pokemons',
       component: () => import('../views/PokemonsView.vue')
