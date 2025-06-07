@@ -1,26 +1,44 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-</script>
-
-
-
 <template>
-  <nav class="navbar bg-dark navbar-dark">
-  <div class="container-fluid">
-    <router-link
-    class="navbar-brand" to="/">
-      <img src="@/assets/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-      PokeApi
-    </router-link>
-    <div>
-      <router-link class="btn btn-outline-primary m-2" to="/">Home</router-link>
-      <router-link class="btn btn-outline-primary" to="/pokemons">Pokemons</router-link>
+  <nav class="navbar custom-navbar">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      <router-link class="navbar-brand d-flex align-items-center gap-2" to="/pokemons">
+        <img src="@/assets/image.png" alt="Logo" width="80" height="30" />
+      </router-link>
+
+      <form
+        class="d-flex"
+        @submit.prevent="handleSearch"
+        v-if="!route.path.includes('/pokemons/') || route.path === '/pokemons'"
+      >
+        <input
+          v-model="searchTerm"
+          class="form-control me-2"
+          type="search"
+          placeholder="Search Pokémon"
+        />
+        <button class="btn btn-outline-light" type="submit">Search</button>
+      </form>
     </div>
-  </div>
-</nav>
+  </nav>
 
-  <div class="container text-center">
-  <RouterView />
+  <div class="container text-center mt-4">
+    <RouterView />
   </div>
-
 </template>
+
+<script setup>
+import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
+const searchTerm = ref('')
+
+const handleSearch = () => {
+  const term = searchTerm.value.trim().toLowerCase()
+  if (term) {
+    router.push(`/pokemons/${term}`)
+    searchTerm.value = ''
+  }
+}
+</script>
